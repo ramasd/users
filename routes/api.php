@@ -14,4 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('users', 'UserController@store');
+Route::post('users', 'UserController@store')->middleware('valid.api.key');
