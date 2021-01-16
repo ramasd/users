@@ -14,7 +14,10 @@ class UserService implements UserServiceInterface
     {
         if ($users) {
             $users = array_map(function ($user) {
-                return ['full_name' => $user['first_name'] . " " . $user['last_name']];
+                if (isset($user['first_name']) AND isset($user['last_name'])) {
+                    return ['full_name' => $user['first_name'] . " " . $user['last_name']];
+                }
+                return ['full_name' => null];
             }, $users);
         } else {
             $users = [];

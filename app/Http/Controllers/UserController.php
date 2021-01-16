@@ -28,8 +28,8 @@ class UserController extends Controller
             [
                 'users'                 => 'array',
                 'users.*'               => 'array',
-                'users.*.first_name'    => 'required|string',
-                'users.*.last_name'     => 'required|string'
+                'users.*.first_name'    => 'required_with:users.*.last_name|string',
+                'users.*.last_name'     => 'required_with:users.*.first_name|string'
             ]
         );
 
