@@ -60,7 +60,7 @@ class UserTest extends TestCase
      */
     public function testUsersStoredCorrectly()
     {
-        $response = $this->postJson('/api/users', $this->users, ['Authorization' => $this->apiKey]);
+        $response = $this->postJson('/api/users', $this->users, ['X-API-Key' => $this->apiKey]);
 
         $response->assertStatus(200);
         $response->assertJsonFragment($this->usersFullNames);
@@ -74,13 +74,13 @@ class UserTest extends TestCase
     {
         unset($this->users['users'][0]['first_name']);
 
-        $response = $this->postJson('/api/users', $this->users, ['Authorization' => $this->apiKey]);
+        $response = $this->postJson('/api/users', $this->users, ['X-API-Key' => $this->apiKey]);
 
         $response->assertStatus(422);
         $response->assertJsonFragment(['message' => 'The given data was invalid.']);
         $response->assertJsonFragment([
             "errors"  => [
-                "users.0.first_name" => ["The users.0.first_name field is required."]
+                "users.0.first_name" => ["The users.0.first_name field is required when users.0.last_name is present."]
             ]
         ]);
     }
@@ -94,13 +94,13 @@ class UserTest extends TestCase
         unset($this->users['users'][0]['first_name']);
         $this->users['users'][0]['first_name'] = null;
 
-        $response = $this->postJson('/api/users', $this->users, ['Authorization' => $this->apiKey]);
+        $response = $this->postJson('/api/users', $this->users, ['X-API-Key' => $this->apiKey]);
 
         $response->assertStatus(422);
         $response->assertJsonFragment(['message' => 'The given data was invalid.']);
         $response->assertJsonFragment([
             "errors"  => [
-                "users.0.first_name" => ["The users.0.first_name field is required."]
+                "users.0.first_name" => ["The users.0.first_name field is required when users.0.last_name is present."]
             ]
         ]);
     }
@@ -113,7 +113,7 @@ class UserTest extends TestCase
     {
         $this->users['users'][0]['first_name'] = [$this->users['users'][0]['first_name']];
 
-        $response = $this->postJson('/api/users', $this->users, ['Authorization' => $this->apiKey]);
+        $response = $this->postJson('/api/users', $this->users, ['X-API-Key' => $this->apiKey]);
 
         $response->assertStatus(422);
         $response->assertJsonFragment(['message' => 'The given data was invalid.']);
@@ -132,13 +132,13 @@ class UserTest extends TestCase
     {
         unset($this->users['users'][0]['last_name']);
 
-        $response = $this->postJson('/api/users', $this->users, ['Authorization' => $this->apiKey]);
+        $response = $this->postJson('/api/users', $this->users, ['X-API-Key' => $this->apiKey]);
 
         $response->assertStatus(422);
         $response->assertJsonFragment(['message' => 'The given data was invalid.']);
         $response->assertJsonFragment([
             "errors"  => [
-                "users.0.last_name" => ["The users.0.last_name field is required."]
+                "users.0.last_name" => ["The users.0.last_name field is required when users.0.first_name is present."]
             ]
         ]);
     }
@@ -152,13 +152,13 @@ class UserTest extends TestCase
         unset($this->users['users'][0]['last_name']);
         $this->users['users'][0]['last_name'] = null;
 
-        $response = $this->postJson('/api/users', $this->users, ['Authorization' => $this->apiKey]);
+        $response = $this->postJson('/api/users', $this->users, ['X-API-Key' => $this->apiKey]);
 
         $response->assertStatus(422);
         $response->assertJsonFragment(['message' => 'The given data was invalid.']);
         $response->assertJsonFragment([
             "errors"  => [
-                "users.0.last_name" => ["The users.0.last_name field is required."]
+                "users.0.last_name" => ["The users.0.last_name field is required when users.0.first_name is present."]
             ]
         ]);
     }
@@ -171,7 +171,7 @@ class UserTest extends TestCase
     {
         $this->users['users'][0]['last_name'] = rand();
 
-        $response = $this->postJson('/api/users', $this->users, ['Authorization' => $this->apiKey]);
+        $response = $this->postJson('/api/users', $this->users, ['X-API-Key' => $this->apiKey]);
 
         $response->assertStatus(422);
         $response->assertJsonFragment(['message' => 'The given data was invalid.']);

@@ -16,7 +16,7 @@ class EnsureApiKeyIsValid
      */
     public function handle($request, Closure $next)
     {
-        if (!Hash::check($request->header('Authorization'), config('api.keys.api_key'))) {
+        if (!Hash::check($request->header('X-API-Key'), config('api.keys.api_key'))) {
             return response()->json(['message' => config('api.messages.invalid_api_key')], 401);
         }
 
